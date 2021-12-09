@@ -1,0 +1,76 @@
+[
+    {
+        "id": "l0",
+        "open": false,
+        "selected": false,
+        "level": 0,
+        "icon": "HomeIcon",
+        "variant": "primary",
+        "label": "Item",
+        "url": "/user",
+        "path": "l0",
+        "nodes": []
+    },
+    {
+        "id": "l0",
+        "open": false,
+        "selected": false,
+        "level": 0,
+        "icon": "UniversityIcon",
+        "variant": "primary",
+        "label": "Explore Mentors",
+        "url": "/explore-mentors",
+        "path": "l0",
+        "nodes": []
+    },
+    {
+        "id": "l0",
+        "open": false,
+        "selected": false,
+        "level": 0,
+        "icon": "MyCourseIcon",
+        "variant": "primary",
+        "label": "My Sessions",
+        "url": "/session",
+        "path": "l0",
+        "nodes": []
+    },
+    {
+        "id": "l0",
+        "open": false,
+        "selected": false,
+        "level": 0,
+        "icon": "MessageIcon",
+        "variant": "primary",
+        "label": "Messages",
+        "url": "/messages",
+        "path": "l0",
+        "nodes": [],
+        "unreadMessages": 8
+    },
+    {
+        "id": "l0",
+        "open": false,
+        "selected": false,
+        "level": 0,
+        "icon": "NotificationIcon",
+        "variant": "primary",
+        "label": "Notifications",
+        "url": "/notification",
+        "path": "l0",
+        "nodes": [],
+        "unreadMessages": 5
+    },
+    {
+        "id": "l0",
+        "open": false,
+        "selected": false,
+        "level": 0,
+        "icon": "SettingsIcon",
+        "variant": "primary",
+        "label": "Settings",
+        "url": "/settings",
+        "path": "l0",
+        "nodes": []
+    }
+]
