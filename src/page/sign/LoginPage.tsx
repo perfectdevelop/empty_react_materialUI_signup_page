@@ -86,6 +86,9 @@ const SignBut = styled.button`
     box-shadow: 2px 3px 10px rgba(17, 67, 119, 0.3);
     border: none;
     font-weight: 600;
+    &:hover{
+        cursor: pointer;
+    }
 `
 
 const LogBut = styled.button`
@@ -97,6 +100,9 @@ const LogBut = styled.button`
     border: none;
     font-weight: 600;
     box-shadow: 2px 5px 8px rgba(17, 67, 119, 0.3);
+    &:hover{
+        cursor: pointer;
+    }
 `;
 
 const ButtonsGroup = styled.div`
@@ -110,6 +116,7 @@ const Label = styled.p`
     margin: 0;
     font-size: 10px;
     font-family: Poppins;
+    font-weight: 500;
     color: #4f4f4f;
     margin-bottom: 6px;
     margin-top: 20px;
