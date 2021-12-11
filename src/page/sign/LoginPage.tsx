@@ -112,6 +112,15 @@ const ButtonsGroup = styled.div`
     gap: 20px;
 `;
 
+const ButtonsGroups = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: absolute;
+    bottom: 20px;
+    right: 0px;
+`;
+
 const Label = styled.p`
     margin: 0;
     font-size: 10px;
@@ -290,7 +299,8 @@ const DivModal = styled.div`
     right: 70px;
     top: 0;
     bottom: 0;
-    height: 390px;
+    min-height: 390px;
+    max-height: 420px;
     margin: auto;
     @media(max-width: 879px){
         right: 0;
@@ -408,10 +418,10 @@ const LoginPage = () => {
                         <Modal open={open} onClose={onClose} style={{ borderRadius: '10px' }}>
                             <DivModal>
                                 <Calendar date={date} onChange={onChange} showMonthArrow={false} color="#114377" className={classes.calendar} width={300} />
-                                <ButtonsGroup style={{ justifyContent: "end", paddingRight: '20px' }}>
+                                <ButtonsGroups style={{ justifyContent: "end", paddingRight: '20px' }}>
                                     <Cancel onClick={cancel}>Cancel</Cancel>
                                     <CalConfirm onClick={confirm}>Confirm</CalConfirm>
-                                </ButtonsGroup>
+                                </ButtonsGroups>
                             </DivModal>
                         </Modal>
                     </Divd>
