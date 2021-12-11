@@ -276,7 +276,7 @@ const useStyles = makeStyles((theme) => ({
     calendarIcon: {
         position: 'absolute',
         right: 10,
-        top: 51
+        top: 55
     }
 }));
 
