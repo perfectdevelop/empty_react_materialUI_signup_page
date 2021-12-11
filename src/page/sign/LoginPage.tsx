@@ -3,7 +3,13 @@ import styled from 'styled-components';
 
 import { useFormik } from 'formik';
 import UIForm from '../../ui-kit/form/UIForm';
-import UIDatePicker from '../../ui-kit/form/UIDatePicker';
+import { ReactComponent as CalendarIcon } from '../../media/image/calendar-icon.svg';
+import { useState, FC } from "react";
+import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { makeStyles } from '@material-ui/core';
+import { Modal } from '@material-ui/core';
 
 const Container = styled.div`
     width: 100%;
@@ -111,9 +117,35 @@ const Label = styled.p`
 
 const Div = styled.div`
     width: 100%;
+    position: relative;
     input{
         width: 100%;
         height: 44px !important;
+    }
+    input[type="date"]::-webkit-inner-spin-button,
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+    }
+`;
+
+const Divd = styled.div`
+    width: 100%;
+    position: relative;
+    input{
+        width: 100%;
+        height: 44px !important;
+    }
+    input[type="date"]::-webkit-inner-spin-button,
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+    }
+    &.rdrDayToday::after{
+        display: none;
+    }
+    &.rdrSelected{
+        background-color: red !important;
     }
 `;
 
@@ -136,12 +168,213 @@ const ConfirmBut = styled.button`
     box-shadow: 2px 5px 8px rgba(17, 67, 119, 0.3);
 `;
 
+const useStyles = makeStyles((theme) => ({
+    calendar: {
+        zoom: 0.904,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        "&>.rdrMonthsVertical": {
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+        },
+        "&>.rdrDateDisplayWrapper": {
+            height: 50,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            backgroundColor: 'white',
+            "&::before": {
+                content: `'Select birthday'`,
+                position: 'absolute',
+                padding: 20,
+                fontWeight: 600,
+                fontSize: 16,
+                color: '#0b0b0b'
+            },
+        },
+        "&>div:nth-child(2)": {
+            "&>span": {
+                justifyContent: 'space-between',
+                padding: 20,
+                gap: 20,
+                "&>span:nth-child(2)": {
+                    display: 'none'
+                },
+                "&>span:nth-child(1)": {
+                    borderRadius: 8,
+                    border: '1px solid #BAC4CF',
+                    flexGrow: 1,
+                    "&>select": {
+                        width: '100%'
+                    },
+                },
+                "&>span:nth-child(3)": {
+                    borderRadius: 8,
+                    border: '1px solid #BAC4CF',
+                    flexGrow: 1,
+                    "&>select": {
+                        width: '100%'
+                    }
+                }
+            }
+        },
+        "&>div:nth-child(3)": {
+            "&>div": {
+                "&>div:nth-child(1)": {
+                    "&>span": {
+                        color: '#114377',
+                        fontSize: '10px !important',
+                        fontWeight: 600
+                    }
+                },
+                "&>div:nth-child(2)": {
+                    "&>.rdrDay": {
+                        "&>.rdrDayStartPreview": {
+                            border: 'none'
+                        },
+                        "&>.rdrDayStartPreview:hover": {
+                            border: 'none'
+                        },
+                        "&>.rdrDayEndPreview": {
+                            border: 'none'
+                        },
+                        "&>.rdrDayEndPreview:hover": {
+                            border: 'none'
+                        },
+
+                        "&>.rdrSelected": {
+                            borderRadius: '50%',
+                            height: 30,
+                            width: 30,
+                            left: 7,
+                            top: 2,
+                            boxShadow: '2px 3px 10px rgb(17 67 119 / 30%)'
+                        }
+                    },
+                    "&>.rdrDayHovered": {
+                        "&>.rdrDayNumber:after": {
+                            display: 'none',
+                        }
+                    },
+                    "&>.rdrDayToday": {
+                        "&>.rdrDayNumber": {
+                            "&>span::after": {
+                                display: 'none'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    calendarIcon: {
+        position: 'absolute',
+        right: 10,
+        top: 51
+    }
+}));
+
+const DivModal = styled.div`
+    width: 300px;
+    background-color: white;
+    box-shadow: 2px 4px 8px rgb(0 0 0 / 15%);
+    border-radius: 10px;
+    padding-bottom: 20px;
+    position: absolute;
+    right: 70px;
+    top: 0;
+    bottom: 0;
+    height: 390px;
+    margin: auto;
+    @media(max-width: 879px){
+        right: 0;
+        left: 0;
+        margin: auto;
+    }
+    &:focus-visible{
+        outline: none;
+    }
+`;
+
+const Cancel = styled.p`
+    padding: 8px 19px;
+    color: #114377;
+    font-size: 12px;
+    font-weight: 600;
+    &:hover{
+        cursor: pointer;
+    }
+`;
+
+const CalConfirm = styled.button`
+    background-color: #114377;
+    box-shadow: 2px 5px 8px rgba(17, 67, 119, 0.3);
+    border-radius: 8px;
+    padding: 8px 19px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    &:hover{
+        cursor: pointer;
+    }
+`;
+
+const ConfirmButActive = styled.div`
+    width: 120px;
+    height: 44px;
+    border-radius: 8px;
+    background-color: #114377;
+    color: white;
+    border: none;
+    margin-top: 30px;
+    font-weight: 600;
+    padding: 12px 30px;
+    box-shadow: 2px 5px 8px rgba(17, 67, 119, 0.3);
+    &:hover{
+        cursor: pointer;
+    }
+`;
+
 const LoginPage = () => {
 
     const formik = useFormik({
         initialValues: {},
         onSubmit: (values: any) => { },
     });
+
+    const [date, setDate] = useState(new Date());
+    const [open, setOpen] = React.useState(false);
+    const classes = useStyles();
+    const [temp, setTemp] = useState<any>();
+    const handleOpen = () => setOpen(true);
+    const [value, setValue] = useState<any>();
+
+    function onChange(date: any) {
+        setDate(date);
+        var dd = String(date.getDate()).padStart(2, '0');
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = date.getFullYear();
+
+        var today = yyyy + '-' + mm + '-' + dd;
+
+        setTemp(today);
+    }
+
+    const onClose = () => {
+        setOpen(false);
+    }
+
+    const cancel = () => {
+        setOpen(false);
+    }
+
+    const confirm = () => {
+        setValue(temp);
+        onClose();
+    }
+
+    const valueChange = (e: any) => {
+        setValue(e.target.value)
+    }
 
     return (
         <Container>
@@ -161,12 +394,26 @@ const LoginPage = () => {
                         <Label>FULL NAME</Label>
                         <Input id="firstName" name="firstName" />
                     </Div>
-                    <Div>
+                    <Divd>
                         <Label>DATE OF BIRTH</Label>
-                        <UIDatePicker id='dob' name="dob" />
-                    </Div>
+                        <Input type="date" value={value} max="9999-12-31" data-date-format="MM/dd/yyyy" style={{ position: 'relative' }} onChange={valueChange} />
+                        <CalendarIcon className={classes.calendarIcon} onClick={handleOpen} />
+                        <Modal open={open} onClose={onClose} style={{ borderRadius: '10px' }}>
+                            <DivModal>
+                                <Calendar date={date} onChange={onChange} showMonthArrow={false} color="#114377" className={classes.calendar} width={300} />
+                                <ButtonsGroup style={{ justifyContent: "end", paddingRight: '20px' }}>
+                                    <Cancel onClick={cancel}>Cancel</Cancel>
+                                    <CalConfirm onClick={confirm}>Confirm</CalConfirm>
+                                </ButtonsGroup>
+                            </DivModal>
+                        </Modal>
+                    </Divd>
                     <Confirm>
-                        <ConfirmBut>Confirm</ConfirmBut>
+                        {console.log(value)}
+                        {value ?
+                            <ConfirmButActive>Confirm</ConfirmButActive> :
+                            <ConfirmBut disabled>Confirm</ConfirmBut>
+                        }
                     </Confirm>
                 </UIForm>
             </Forms>
